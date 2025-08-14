@@ -30,7 +30,7 @@ jobs:
 
       - name: Build & Push Docker Image
         run: |
-          IMAGE=janm/devops-pipeline-demo:$(date +%s)
+          IMAGE=vitehd/devops-pipeline-demo:$(date +%s)
           docker build -t $IMAGE .
           docker push $IMAGE
           echo "IMAGE=$IMAGE" >> $GITHUB_ENV
