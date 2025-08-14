@@ -30,20 +30,7 @@ jobs:
 
       - name: Build & Push Docker Image
         run: |
-          IMAGE=vitehd/devops-pipeline-demo:$(date +%s)
+          IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/devops-pipeline-demo:$(date +%s)
           docker build -t $IMAGE .
           docker push $IMAGE
           echo "IMAGE=$IMAGE" >> $GITHUB_ENV
-
-      - name: Set up Kubectl
-        uses: azure/setup-kubectl@v4
-
-      - name: Configure kubeconfig
-        run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.KUBECONFIG_FILE }}" > ~/.kube/config
-
-      - name: Deploy to Minikube
-        run: |
-          sed -i "s|janm/devops-pipeline-demo:latest|$IMAGE|g" k8s/deployment.yaml
-          kubectl apply -f k8s/deployment.yaml
